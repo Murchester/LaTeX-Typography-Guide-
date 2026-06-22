@@ -1,0 +1,376 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{mdframed}
+\usepackage{fontspec}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\definecolor{nord0}{HTML}{2E3440}
+\definecolor{nord1}{HTML}{3B4252}
+\definecolor{nord2}{HTML}{434C5E}
+\definecolor{nord3}{HTML}{4C566A}
+\definecolor{nord4}{HTML}{D8DEE9}
+\definecolor{nord6}{HTML}{ECEFF4}
+\definecolor{nord8}{HTML}{88C0D0}
+\definecolor{nord9}{HTML}{81A1C1}
+\definecolor{nord10}{HTML}{5E81AC}
+\definecolor{nord11}{HTML}{BF616A}
+\definecolor{nord13}{HTML}{EBCB8B}
+\definecolor{nord14}{HTML}{A3BE8C}
+
+\setmainfont{TeX Gyre Pagella}
+\setmonofont{Latin Modern Mono}[Scale=0.92]
+
+\titleformat{\section}{\large\bfseries\color{nord0}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\bfseries\color{nord10}}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\color{nord3} Mathematical Typography}
+\fancyhead[R]{\small\color{nord3} \thepage}
+\renewcommand{\footrulewidth}{0pt}
+
+\hypersetup{colorlinks=true, linkcolor=nord10, urlcolor=nord10}
+
+\newtcolorbox{badcode}{
+  enhanced, breakable, colback=nord6, colframe=nord11,
+  boxrule=0.5pt, left=6pt, right=6pt, top=3pt, bottom=3pt,
+  fonttitle=\bfseries\small, title={\textcolor{nord11}{$\times$ Avoid}},
+  attach title to upper, before upper={\par\vspace{2pt}}
+}
+\newtcolorbox{goodcode}{
+  enhanced, breakable, colback=nord6, colframe=nord14,
+  boxrule=0.5pt, left=6pt, right=6pt, top=3pt, bottom=3pt,
+  fonttitle=\bfseries\small, title={\textcolor{nord14!70!black}{\checkmark\ Prefer}},
+  attach title to upper, before upper={\par\vspace{2pt}}
+}
+\newtcolorbox{tipbox}[1]{
+  enhanced, breakable, colback=nord1!4, colframe=nord3,
+  boxrule=0.3pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt,
+  fonttitle=\bfseries, coltitle=nord6, colbacktitle=nord3,
+  title={#1}
+}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\eu}{\mathrm{e}}
+\newcommand{\iu}{\mathrm{i}}
+
+\title{\textbf{\color{nord0} The Quiet Rules of\\ Mathematical Typography}\\[4pt]
+\large\color{nord3}A LaTeX field guide for documents that don't look like LaTeX defaults}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{tcolorbox}[enhanced, colback=nord1, colframe=nord1, coltext=nord6,
+  arc=3pt, left=10pt, right=10pt, top=8pt, bottom=8pt]
+\small
+Good typography is invisible. Nobody finishes a paper thinking ``what lovely
+thin-space kerning before that differential.'' They just don't notice anything
+\emph{wrong}. Every rule below exists to remove a small, nagging visual error
+you've trained yourself not to see anymore.
+\end{tcolorbox}
+
+\vspace{0.6em}
+\tableofcontents
+\newpage
+
+\section{Constants, Operators \& Differentials}
+
+\begin{tipbox}{1. Upright constants and operators}
+Mathematical constants and named operators are not variables, don't
+slant them like one.
+\end{tipbox}
+
+\begin{minipage}[t]{0.48\textwidth}
+\begin{badcode}
+\verb|$e^x$, $i$, $\int f(x)dx$|\\[2pt]
+$e^x,\quad i,\quad \int f(x)\,dx$
+\end{badcode}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\begin{goodcode}
+\verb|\mathrm{e}^x|, \verb|\mathrm{i}|, \verb|\mathrm{d}x|\\[2pt]
+$\eu^x,\quad \iu,\quad \int f(x)\,\dd x$
+\end{goodcode}
+\end{minipage}
+
+\begin{tipbox}{2. Correct spacing around differentials}
+A thin space (\texttt{\textbackslash,}) separates the integrand from
+$\mathrm{d}x$ so the eye reads them as two distinct objects.
+\end{tipbox}
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Cramped:} & $\int f(x)\mathrm{d}x$ \quad \texttt{\textbackslash int f(x)\textbackslash mathrm\{d\}x} \\[4pt]
+\textbf{Open:} & $\displaystyle\int f(x)\,\mathrm{d}x$ \quad \texttt{\textbackslash int f(x)\textbackslash, \textbackslash mathrm\{d\}x}
+\end{tabular}
+\end{center}
+
+\begin{tipbox}{3. Use proper operator names}
+\texttt{sin}, \texttt{log}, \texttt{lim} typeset as three italic
+variables multiplied together unless declared as operators.
+\end{tipbox}
+
+\begin{badcode}
+\verb|$sin(x)$| \quad\(\to\)\quad $sin(x)$ \hfill\textit{(s, i, n -- three variables)}
+\end{badcode}
+\begin{goodcode}
+\verb|$\sin(x)$| \quad\(\to\)\quad $\sin(x)$ \hfill\textit{also: \texttt{\textbackslash log, \textbackslash ln, \textbackslash exp, \textbackslash lim, \textbackslash max, \textbackslash min}}
+\end{goodcode}
+
+\begin{tipbox}{4. Distinguish transpose from exponent}
+If $T$ means \emph{transpose}, it isn't a variable, so don't italicize it.
+\end{tipbox}
+
+\begin{center}
+\texttt{A\^{}T} $\to A^T$ \quad(ambiguous)
+\qquad vs.\qquad
+\texttt{A\^{}\textbackslash top} $\to A^\top$ \quad(unambiguous)
+\end{center}
+
+\begin{tipbox}{5. Use the correct glyph for primes}
+Never type an apostrophe in text mode and expect a derivative mark.
+\end{tipbox}
+
+\begin{badcode}
+\verb|f' (text mode)| \hfill produces a typewriter apostrophe, not a prime
+\end{badcode}
+\begin{goodcode}
+\verb|$f'$|, \verb|$f''$|, \verb|$f^{(n)}$| \hfill $f',\ f'',\ f^{(n)}$ -- true prime glyphs
+\end{goodcode}
+
+\begin{tipbox}{6. Don't use italic capitals for common sets}
+$\R,\C,\N,\Z$ read instantly as \emph{sets}, distinct from any italic
+variable $R$, $C$, $N$, or $Z$ in the same document.
+\end{tipbox}
+
+\section{Spacing \& Delimiters}
+
+\begin{tipbox}{7. Scale delimiters only when needed}
+\texttt{\textbackslash left( \textbackslash right)} on every parenthesis
+makes simple expressions visually noisy.
+\end{tipbox}
+
+\begin{center}
+$(a+b)$ \quad\texttt{(a+b)} \hfill needs nothing\\[4pt]
+$\left(\dfrac{a+b}{c+d}\right)$ \quad\texttt{\textbackslash left(\textbackslash dfrac\{a+b\}\{c+d\}\textbackslash right)} \hfill needs scaling
+\end{center}
+
+\begin{tipbox}{8. Use proper minus signs}
+A minus sign only exists in math mode. A text hyphen is not a substitute.
+\end{tipbox}
+\begin{goodcode}
+Always write subtraction inside \verb|$...$|: \texttt{\$x-y\$} $\to x-y$. LaTeX
+renders the correct glyph automatically once you are in math mode.
+\end{goodcode}
+
+\begin{tipbox}{9. Avoid inline fractions when possible}
+\texttt{\textbackslash frac} inside a paragraph distorts line spacing.
+A slashed form is often kinder to the page.
+\end{tipbox}
+\begin{center}
+Inline $\frac{a+b}{c+d}$ stretches the line \quad vs.\quad inline $(a+b)/(c+d)$ stays flush.
+\end{center}
+
+\begin{tipbox}{10. Classify custom delimiters}
+TeX spaces symbols differently depending on whether they're ordinary,
+binary operators, relations, openings, closings, or punctuation. Custom
+notation should declare its class with \texttt{\textbackslash mathopen\{\}}
+/ \texttt{\textbackslash mathclose\{\}} so spacing stays correct.
+\end{tipbox}
+
+\begin{tipbox}{11. Use \texttt{\textbackslash colon} instead of \texttt{:}}
+\end{tipbox}
+\begin{center}
+\texttt{f:A\textbackslash to B} $\to f:A\to B$ \hfill cramped\\[2pt]
+\texttt{f\textbackslash colon A\textbackslash to B} $\to f\colon A\to B$ \hfill proper mathematical spacing
+\end{center}
+
+\begin{tipbox}{12. Don't use \texttt{\textbackslash cdot} for everything}
+Different products carry different meanings.
+\end{tipbox}
+\begin{center}
+$a\cdot b$ \quad $ab$ \quad $a\times b$ \quad $a\otimes b$
+\end{center}
+
+\begin{tipbox}{13. Use ellipses correctly}
+\texttt{...} is a typewriter artifact, not a mathematical ellipsis.
+\end{tipbox}
+\begin{center}
+\texttt{\textbackslash ldots, \textbackslash cdots, \textbackslash vdots, \textbackslash ddots}\\[4pt]
+$a_1,a_2,\ldots,a_n \qquad A_1A_2\cdots A_n$
+\end{center}
+
+\begin{tipbox}{14. Distinguish text and math punctuation}
+A comma between two math expressions needs the same spacing rules as
+in prose.
+\end{tipbox}
+\begin{center}
+$f(x),g(x)$ \quad\texttt{f(x),g(x)} \hfill correct\\
+$f(x), g(x)$ \quad with a manual space \hfill usually redundant / inconsistent
+\end{center}
+
+\begin{tipbox}{15. Thin spaces in numbers}
+\end{tipbox}
+\begin{center}
+\texttt{1000000} \hfill vs \hfill \texttt{1\textbackslash,000\textbackslash,000} $\to 1\,000\,000$
+\quad or \quad \verb|\num{1000000}| (via \texttt{siunitx}) $\to \num{1000000}$
+\end{center}
+
+\begin{tipbox}{16. Align equations on meaning, not appearance}
+Readers scan equals signs vertically, give them a column to scan.
+\end{tipbox}
+\begin{minipage}[t]{0.46\textwidth}
+\begin{badcode}
+\begin{verbatim}
+a+b=c
+x+y=z
+\end{verbatim}
+\end{badcode}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.5\textwidth}
+\begin{goodcode}
+\begin{verbatim}
+\begin{align}
+a+b &= c \\
+x+y &= z
+\end{align}
+\end{verbatim}
+\end{goodcode}
+\end{minipage}
+
+\section{Units \& Notational Consistency}
+
+\begin{tipbox}{17. Distinguish vectors from scalars consistently}
+Pick one convention per document and never mix it.
+\end{tipbox}
+\begin{center}
+$\mathbf{v}$ \quad or \quad $\vec{v}$ \quad or \quad $\boldsymbol{v}$ \hfill the choice matters less than the consistency
+\end{center}
+
+\begin{tipbox}{18. Use roman text for units}
+\end{tipbox}
+\begin{center}
+$10 km$ \texttt{(10 km, italic, cramped)} \hfill bad\\
+$10\,\mathrm{km}$ \texttt{(10\textbackslash,\textbackslash mathrm\{km\})} \hfill better\\
+\verb|\SI{10}{\kilo\meter}| $\to$ \SI{10}{\kilo\meter} \hfill best, via \texttt{siunitx}
+\end{center}
+
+\begin{tipbox}{19. Use semantic commands}
+Don't repeat \texttt{\textbackslash mathbb\{R\}} fifty times.
+\end{tipbox}
+\begin{goodcode}
+\begin{verbatim}
+\newcommand{\R}{\mathbb{R}}
+\end{verbatim}
+Then write \texttt{\textbackslash R} everywhere: $\R, \C, \N, \Z$. Trivial to
+redefine globally later, and the document above does exactly this.
+\end{goodcode}
+
+\begin{tipbox}{20. Match notation to discipline}
+Typography is partly about fitting the conventions of your readers.
+\end{tipbox}
+\begin{center}
+Physics: $\partial_t u$ \qquad Mathematics: $\dfrac{\partial u}{\partial t}$ \qquad Engineering: $\dot{x}$
+\end{center}
+
+\section{Punctuation, Dashes \& Quotes}
+
+\begin{tipbox}{21. Use proper quotation marks}
+\end{tipbox}
+\begin{center}
+\verb|"quote"| \hfill straight quotes, wrong in prose\\
+\verb|``quote''| $\to$ ``quote'' \hfill correct typographic quotes
+\end{center}
+
+\begin{tipbox}{22. Pay attention to dashes}
+Three different characters, three different jobs.
+\end{tipbox}
+\begin{center}
+\begin{tabular}{lll}
+\texttt{-} & hyphen & co-author\\
+\texttt{-{}-} & en dash & pages 10--20\\
+\texttt{-{}-{}-} & em dash & He paused---then continued.
+\end{tabular}
+\end{center}
+
+\begin{tipbox}{23. Use non-breaking spaces}
+A tilde (\texttt{\textasciitilde}) glues two tokens so TeX never splits
+them across a line break.
+\end{tipbox}
+\begin{center}
+\texttt{Fig.\textasciitilde 3}, \texttt{Eq.\textasciitilde(5)}, \texttt{Dr.\textasciitilde Smith}, \texttt{Theorem\textasciitilde 2}
+\end{center}
+
+\begin{tipbox}{24. Never manually insert line breaks to fix layout}
+\texttt{\textbackslash\textbackslash} scattered through prose fights
+TeX's own justification engine and tends to create worse spacing later
+in the document, not better.
+\end{tipbox}
+
+\begin{tipbox}{25. Proper quotes inside code listings too}
+If code is shown as prose rather than executed, curly quotes can look
+better than straight ones. Reserve straight quotes for code that is
+meant to actually compile or run.
+\end{tipbox}
+
+\section{Document-wide Polish}
+
+\begin{tipbox}{26. Don't abuse boldface}
+Hierarchy comes from whitespace and structure, not from bolding every
+other sentence.
+\end{tipbox}
+
+\begin{tipbox}{27. Use microtype}
+One of the largest visual upgrades available for almost no effort.
+\end{tipbox}
+\begin{goodcode}
+\verb|\usepackage{microtype}|\\[2pt]
+Enables character protrusion, font expansion, and better justification.
+Most readers won't know why a document looks better. It just does.
+\end{goodcode}
+
+\begin{tipbox}{28. Care about widows and orphans}
+A \emph{widow} is a paragraph's last line stranded alone at the top of
+the next page; an \emph{orphan} is a paragraph's first line stranded
+alone at the bottom of the previous page. Avoid both.
+\end{tipbox}
+
+\begin{tipbox}{29. Use proper theorem styling}
+A theorem should \emph{look} different from a definition.
+\end{tipbox}
+\begin{center}
+\begin{tabular}{ll}
+Theorem & italic body \\
+Definition & upright body \\
+Remark & upright body
+\end{tabular}
+\end{center}
+
+
+\vfill
+{\small\color{nord3}\noindent
+Once upright differentials, thin spaces before $\mathrm{d}x$, real
+operator names, \texttt{siunitx} units, and disciplined delimiter usage
+become habits, typographic mistakes in ordinary textbooks start jumping
+off the page. It's hard to unsee.}
+
+\end{document}
